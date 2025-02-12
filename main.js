@@ -42,11 +42,11 @@ c.onclick = _ => {
             var m = Math;
             var noise = x => m.sin((x + 10) * m.sin(m.pow(x + 10, (x % 1) + 10)));
             
-            var hihat = noise(time) * m.pow(1 - (time * 4) % 1, 3) / 4;
+            var hihat = noise(time) * m.pow(1 - (time * 4) % 1, 3) / 2;
             var kick = m.sin(m.pow(1 - (time + 0.5) % 1, 5) * 200);
-            var snare = noise(m.floor(time * 2000)) * m.pow(1 - (time % 1), 5) / 2;
+            var snare = noise(m.floor(time * 10000)) * m.pow(1 - (time % 1), 10);
 
-            return (hihat + kick + snare) / 2;
+            return (hihat + kick + snare);
         })();
     }
     c.connect(a.a);
