@@ -41,14 +41,14 @@ c.onclick = _ => {
             var fract = x => x % 1;
             var time = t / 48000;
             var m = Math;
-            var mix = (a, b, c) => (a * (1 - c)) + (b * c);
             var noise = x => m.sin((x + 10) * m.sin(m.pow(x + 10, fract(x) + 10)));
             
             var bassmelodygen = function(time) {
                 var melody = 0;
                 for(let i = 0; i < 6; i++) {
+                    var c = '44223322'.charAt(m.floor(time * 2) % 8);
                     melody += m.asin(
-                        m.sin(time * mix(50.0 + i, i * 50.0, '67886654'.charAt(m.floor(time * 4) % 8))) * (1 - fract(time * 4))) / m.PI;
+                        m.sin(time * ((0.5 + i * 20 * (1 - c)) + (i * 120.0 * c))) * (1 - fract(time * 4))) / m.PI;
                 }
                 return melody;
             };
