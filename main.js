@@ -42,20 +42,11 @@ c.onclick = _ => {
             var m = Math;
             var noise = x => m.sin((x + 10) * m.sin(m.pow(x + 10, (x % 1) + 10)));
             
-            var bassmelodygen = function(time) {
-                var melody = 0;
-                for(let i = 0; i < 6; i++) {
-                    var c = '44223322'.charAt(m.floor(time * 2) % 8);
-                    melody += m.asin(
-                        m.sin(time * ((0.5 + i * 20 * (1 - c)) + (i * 120.0 * c))) * (1 - (time * 4) % 1)) / m.PI;
-                }
-                return melody;
-            };
             var hihat = noise(time) * m.pow(1 - (time * 4) % 1, 3) / 4;
             var kick = m.sin(m.pow(1 - (time + 0.5) % 1, 5) * 200);
             var snare = noise(m.floor(time * 2000)) * m.pow(1 - (time % 1), 5) / 2;
 
-            return (bassmelodygen(time) ** 3) + (hihat + kick + snare) / 2;
+            return (hihat + kick + snare) / 2;
         })();
     }
     c.connect(a.a);
