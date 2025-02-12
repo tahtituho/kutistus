@@ -20,7 +20,7 @@ vec3 rot(vec3 zp, float a) {
 }
 
 float scene(vec3 path) {    
-    path = rot(path, -t) + sin(rot(path, t * 2.0)) * 0.3;
+    path = rot(path, -t * 2.0) + sin(rot(path, t * 4.0)) * 0.3;
     mt = length(tan(path * 2.0 + t));
     vec4 p = vec4(path, 1.0);
     for (int i = 0; i < 12; i++) {
