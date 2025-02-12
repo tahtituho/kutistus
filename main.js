@@ -38,23 +38,22 @@ c.onclick = _ => {
         //Write tune here
         c.buffer.getChannelData(0)[t] = 
         (_ => {
-            var fract = x => x % 1;
             var time = t / 48000;
             var m = Math;
-            var noise = x => m.sin((x + 10) * m.sin(m.pow(x + 10, fract(x) + 10)));
+            var noise = x => m.sin((x + 10) * m.sin(m.pow(x + 10, (x % 1) + 10)));
             
             var bassmelodygen = function(time) {
                 var melody = 0;
                 for(let i = 0; i < 6; i++) {
                     var c = '44223322'.charAt(m.floor(time * 2) % 8);
                     melody += m.asin(
-                        m.sin(time * ((0.5 + i * 20 * (1 - c)) + (i * 120.0 * c))) * (1 - fract(time * 4))) / m.PI;
+                        m.sin(time * ((0.5 + i * 20 * (1 - c)) + (i * 120.0 * c))) * (1 - (time * 4) % 1)) / m.PI;
                 }
                 return melody;
             };
-            var hihat = noise(time) * m.pow(1 - fract(time * 4), 3) / 4;
-            var kick = m.sin(m.pow(1 - fract(time + 0.5), 5) * 200);
-            var snare = noise(m.floor(time * 2000)) * m.pow(1 - fract(time), 5) / 2;
+            var hihat = noise(time) * m.pow(1 - (time * 4) % 1, 3) / 4;
+            var kick = m.sin(m.pow(1 - (time + 0.5) % 1, 5) * 200);
+            var snare = noise(m.floor(time * 2000)) * m.pow(1 - (time % 1), 5) / 2;
 
             return (bassmelodygen(time) ** 3) + (hihat + kick + snare) / 2;
         })();
