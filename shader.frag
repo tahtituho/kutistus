@@ -4,37 +4,35 @@ vec2 resolution = vec2(1280, 720);
 float d;
 float mt;
 
-float as;
-float ac;
+vec3 as;
+vec3 ac;
 
 vec2 uv;
 
-vec3 rot(vec3 zp, float a) {
+vec3 rot(vec3 zp, vec3 a) {
     as = sin(a);
     ac = cos(a);
+    zp = vec3(
+        ac.z*zp.x-as.z*zp.y,
+        as.z*zp.x+ac.z*zp.y,
+        zp.z);
     return vec3(
-        ac * zp.x - as * zp.y,
-        as * zp.x + ac * zp.y,
-        zp.z
+        ac.y*zp.x+as.y*zp.z,
+        zp.y,
+        -as.y*zp.x+ac.y*zp.z
     );
 }
 
 float scene(vec3 path) {    
-    path = rot(path, -t * 2.0) + sin(rot(path, t * 4.0)) * 0.3;
-    mt = length(tan(path * 2.0 + t));
-    vec4 p = vec4(path, 1.0);
-    for (int i = 0; i < 12; i++) {
-        p.xyz = clamp(p.xyz, -2.5, 2.5) * 2.0 - p.xyz; 
-        float r = dot(p.xyz, p.xyz);
-        p *= ((r < 6.0) ? 6.0 / r : 1.0) * (-29.8 * 0.272321 + 5.0);
-    }
-    return length(p.xyz) / abs(p.w);
+    path = (rot(path, vec3(1.0) + t * 0.5) + sin(rot(path, vec3(0.5) + t)) * 0.2);
+    mt = length(abs(cos(path * 5.0)) - 1.0);
+    return (abs(dot(cos(path), sin(path.zxy)) - 3.0) - 2.0);
 }
 
 void main() {
     uv = (2.0 * gl_FragCoord.xy - resolution) / resolution.y;
     for(int i = 0; i <= 64; i++) {
-        d += scene(vec3(0.85) + normalize(vec3(0.0, -0.5145, -0.8575) + uv.x * vec3(-0.75, 0.0, 0.0) + uv.y * vec3(0.0, 0.6443, -0.3859)) * d);
+        d += scene(vec3(-t) + normalize(vec3(0.0, -0.5145, -0.8575) + uv.x * vec3(-0.75, 0.0, 0.0) + uv.y * vec3(0.0, 0.6443, -0.3859)) * d);
     }
-    gl_FragColor = vec4(vec3(smoothstep(d, 0.0, 2.0)) * (mt * vec3(0.94, 0.81, 0.05)), 1.0); 
+    gl_FragColor = vec4(vec3(1.0 - smoothstep(d, 0.0, 2.0)) * (mt * vec3(0.94, 0.81, 0.05)), 1.0); 
 }

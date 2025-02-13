@@ -17,7 +17,7 @@ cs = (src, type, shader = g.cS(type)) => {
 }
 
 d = _ => {  
-    g.uniform1f(g.gf(p, "t"), a.currentTime);
+    g.uniform1f(g.gf(p, `t`), a.currentTime);
     g.dr(6, 0, 3);
     requestAnimationFrame(d);
 }
@@ -33,7 +33,7 @@ c.onclick = _ => {
     g.eV(0);
     
     c = a.B();
-    c.buffer = a.createBuffer(1, q = 44000 * 45, 44000);
+    c.buffer = a.createBuffer(1, q = 48000 * 45, 48000);
     for (t = q; t--;) {
         //Write tune here
         c.buffer.getChannelData(0)[t] = 
@@ -41,12 +41,12 @@ c.onclick = _ => {
             var time = t / 48000;
             var m = Math;
             var noise = x => m.sin((x + 10) * m.sin(m.pow(x + 10, (x % 1) + 10)));
-            
-            var hihat = noise(time) * m.pow(1 - (time * 4) % 1, 3) / 2;
-            var kick = m.sin(m.pow(1 - (time + 0.5) % 1, 5) * 200);
-            var snare = noise(m.floor(time * 10000)) * m.pow(1 - (time % 1), 10);
-
-            return (hihat + kick + snare);
+            var melody = 0;
+            for(let i = 0; i < 5; i++) {
+                melody += (
+                    m.sin(time * (i * 100.0 * `33223 24`.charAt(m.floor(time) % 8))) * (1 - (time * 4) % 1));
+            }
+            return (melody ** 3) + (noise(time) * m.pow(1 - (time * 4) % 1, 3) / 2 + m.sin(m.pow(1 - (time + 0.5) % 1, 5) * 200) + noise(m.floor(time * 10000)) * m.pow(1 - (time % 1), 10)) / 2;
         })();
     }
     c.connect(a.a);
