@@ -1,6 +1,5 @@
 precision lowp float;
 uniform float t;
-vec2 resolution = vec2(1280, 720);
 float d;
 float mt;
 
@@ -13,9 +12,9 @@ vec3 rot(vec3 zp, float a) {
     as = sin(a);
     ac = cos(a);
     return vec3(
-        ac*zp.x+as*zp.z,
+        ac * zp.x + as * zp.z,
         zp.y,
-        -as*zp.x+ac*zp.z
+        -as * zp.x + ac * zp.z
     );
 }
 
@@ -26,7 +25,7 @@ float scene(vec3 path) {
 }
 
 void main() {
-    uv = (2.0 * gl_FragCoord.xy - resolution) / resolution.y;
+    uv = (2.0 * gl_FragCoord.xy - vec2(1280, 720)) / 720.0;
     for(int i = 0; i <= 64; i++) {
         d += scene(vec3(-t) + normalize(vec3(0.0, -0.5145, -0.8575) + uv.x * vec3(-0.75, 0.0, 0.0) + uv.y * vec3(0.0, 0.6443, -0.3859)) * d);
     }
