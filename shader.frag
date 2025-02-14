@@ -4,23 +4,23 @@ vec2 resolution = vec2(1280, 720);
 float d;
 float mt;
 
-vec3 as;
-vec3 ac;
+float as;
+float ac;
 
 vec2 uv;
 
-vec3 rot(vec3 zp, vec3 a) {
+vec3 rot(vec3 zp, float a) {
     as = sin(a);
     ac = cos(a);
     return vec3(
-        ac.y*zp.x+as.y*zp.z,
+        ac*zp.x+as*zp.z,
         zp.y,
-        -as.y*zp.x+ac.y*zp.z
+        -as*zp.x+ac*zp.z
     );
 }
 
 float scene(vec3 path) {    
-    path = vec3(1.0, -1.5, 0.0) + path + sin(rot(path, vec3(0.5) + t)) * 0.2;
+    path = vec3(1.0, -1.5, 0.0) + path + sin(rot(path, t)) * 0.2;
     mt = length(abs(cos(path * 5.0)) - 1.0);
     return (abs(dot(cos(path), sin(path.zxy)) - 3.0) - 2.0);
 }
