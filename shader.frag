@@ -12,10 +12,6 @@ vec2 uv;
 vec3 rot(vec3 zp, vec3 a) {
     as = sin(a);
     ac = cos(a);
-    zp = vec3(
-        ac.z*zp.x-as.z*zp.y,
-        as.z*zp.x+ac.z*zp.y,
-        zp.z);
     return vec3(
         ac.y*zp.x+as.y*zp.z,
         zp.y,
@@ -24,7 +20,7 @@ vec3 rot(vec3 zp, vec3 a) {
 }
 
 float scene(vec3 path) {    
-    path = (rot(path, vec3(1.0) + t * 0.5) + sin(rot(path, vec3(0.5) + t)) * 0.2);
+    path = vec3(1.0, -1.5, 0.0) + path + sin(rot(path, vec3(0.5) + t)) * 0.2;
     mt = length(abs(cos(path * 5.0)) - 1.0);
     return (abs(dot(cos(path), sin(path.zxy)) - 3.0) - 2.0);
 }
@@ -34,5 +30,5 @@ void main() {
     for(int i = 0; i <= 64; i++) {
         d += scene(vec3(-t) + normalize(vec3(0.0, -0.5145, -0.8575) + uv.x * vec3(-0.75, 0.0, 0.0) + uv.y * vec3(0.0, 0.6443, -0.3859)) * d);
     }
-    gl_FragColor = vec4(vec3(1.0 - smoothstep(d, 0.0, 2.0)) * (mt * vec3(0.94, 0.81, 0.05)), 1.0); 
+    gl_FragColor = vec4(vec3(smoothstep(0.0, d, 2.0)) * (mt * vec3(0.94, 0.81, 0.05)), 1.0); 
 }
