@@ -44,9 +44,9 @@ c.onclick = _ => {
             var melody = 0;
             for(let i = 0; i < 5; i++) {
                 melody += (
-                    m.sin(time * (i * 100.0 * `33223 24`.charAt(m.floor(time) % 8))) * (1 - (time * 4) % 1));
+                    m.sin(time * (i * 100.0 * `3322`.charAt(m.floor(time) % 4))) * (1 - (time * 4) % 1));
             }
-            return (melody ** 3) + (noise(time) * m.pow(1 - (time * 4) % 1, 3) / 2 + m.sin(m.pow(1 - (time + 0.5) % 1, 5) * 200) + noise(m.floor(time * 10000)) * m.pow(1 - (time % 1), 10));
+            return (melody ** 3) + (noise(time) * m.pow(1 - (time * 4) % 1, 3) + m.sin(m.pow(1 - (time + 0.5) % 1, 5) * 200) + noise(m.floor(time * 10000)) * m.pow(1 - (time % 1), 10));
         })();
     }
     c.connect(a.a);
