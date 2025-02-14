@@ -17,7 +17,7 @@ cs = (src, type, shader = g.cS(type)) => {
 }
 
 d = _ => {  
-    g.uniform1f(g.gf(p, `t`), a.currentTime);
+    g.uniform1f(g.gf(p, `t`), a.currentTime / 2);
     g.dr(6, 0, 3);
     requestAnimationFrame(d);
 }
@@ -40,11 +40,11 @@ c.onclick = _ => {
         (_ => {
             var time = t / 48000;
             var m = Math;
-            var noise = x => m.sin((x + 10) * m.sin(m.pow(x + 10, (x % 1) + 10)));
+            var noise = x => m.sin((x + 10) * m.sin((x + 10) ** ((x % 1) + 10)));
             var melody = 0;
             for(let i = 0; i < 5; i++) {
                 melody += (
-                    m.sin(time * (i * 100.0 * `3322`.charAt(m.floor(time) % 4))) * (1 - (time * 4) % 1));
+                    m.sin(time * (i * 100.0 * `32 2`[m.floor(time) % 4])) * (1 - (time * 4) % 1));
             }
             return (melody ** 3) + (noise(time) * m.pow(1 - (time * 4) % 1, 3) + m.sin(m.pow(1 - (time + 0.5) % 1, 5) * 200) + noise(m.floor(time * 10000)) * m.pow(1 - (time % 1), 10));
         })();
